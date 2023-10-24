@@ -152,11 +152,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Game.cpp" />
+    <ClCompile Include="Sources\Level.cpp" />
     <ClCompile Include="Sources\Menu.cpp" />
     <ClCompile Include="Sources\Pacman.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Config.h" />
+    <ClInclude Include="Sources\Game.h" />
+    <ClInclude Include="Sources\Level.h" />
     <ClInclude Include="Sources\Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

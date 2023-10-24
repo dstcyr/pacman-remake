@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "Config.h"
 #include "Menu.h"
+#include "Game.h"
 
 #if CHECK_MEMORY_LEAKS
 #pragma comment(lib, "C:\\vld\\lib\\Win64\\vld.lib")
@@ -32,9 +33,10 @@ INT WINAPI WinMain(HINSTANCE _In_ hInst, HINSTANCE _In_opt_ hPrev, PSTR _In_ cmd
 
     StateMachine fsm;
     fsm.Add("menu", new Menu());
+    fsm.Add("game", new Game());
 
     Engine::Initialize(title.c_str(), SCREEN_WIDTH, SCREEN_HEIGHT);
-    fsm.SetState("menu");
+    fsm.SetState("game");
 
     Engine::EnterGameLoop(&fsm);
 

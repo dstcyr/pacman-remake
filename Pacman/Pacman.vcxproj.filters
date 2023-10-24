@@ -5,16 +5,31 @@
     <ClCompile Include="Sources\Menu.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Level.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Config.h" />
     <ClInclude Include="Sources\Menu.h">
       <Filter>States</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Level.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="States">
       <UniqueIdentifier>{dfd5f107-c2a9-46a5-8657-e13e6120edc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{029ba0d0-2b04-4180-8cf1-6d3746a5d8b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
