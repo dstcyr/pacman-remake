@@ -1,2 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" />
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Sources\Pacman.cpp" />
+    <ClCompile Include="Sources\Menu.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sources\Config.h" />
+    <ClInclude Include="Sources\Menu.h">
+      <Filter>States</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="States">
+      <UniqueIdentifier>{dfd5f107-c2a9-46a5-8657-e13e6120edc9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
