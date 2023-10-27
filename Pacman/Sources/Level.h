@@ -6,16 +6,31 @@ enum ETile
     EMPTY_TILE,
     COLLISION_TILE,
     POWER_TILE,
-    PILL_TILE
+    PILL_TILE,
+    INVALID_TILE
 };
 
 class Level
 {
 public:
+    static Level& Get();
+
     void Reset();
     void Render();
 
+    void GetStartingPosition(float* x, float* y);
+    void ToLocal(const float worldX, const float worldY, int* localX, int* localY) const;
+    void ToWorld(const int localX, const int localY, float* worldX, float* worldY) const;
+    bool CheckCollision(float x, float y, float w, float h, int* id) const;
+    int GetTileAt(int x, int y);
+    void Transform(int localX, int localY, float* worldX, float* worldY);
+    void SetTile(int x, int y, ETile tileValue);
+
 private:
+    Level() = default;
+    Level(const Level& other) = default;
+    ~Level() = default;
+
     std::vector<int> m_gridData;
     int m_width = 21;
     int m_height = 27;

@@ -16,6 +16,9 @@
 #include "C:\\vld\\include\\vld.h"
 #endif
 
+// https://youtu.be/DxFjFS-idYk?si=7FZiW-ue7vU0Ellv
+// https://jonathanwhiting.com/tutorial/collision/
+
 INT WINAPI WinMain(HINSTANCE _In_ hInst, HINSTANCE _In_opt_ hPrev, PSTR _In_ cmd, INT _In_ flag)
 {
     std::string title = "Pac-man Remake";
@@ -36,7 +39,12 @@ INT WINAPI WinMain(HINSTANCE _In_ hInst, HINSTANCE _In_opt_ hPrev, PSTR _In_ cmd
     fsm.Add("game", new Game());
 
     Engine::Initialize(title.c_str(), SCREEN_WIDTH, SCREEN_HEIGHT);
+
+#if START_IN_GAME
     fsm.SetState("game");
+#else
+    fsm.SetState("menu");
+#endif
 
     Engine::EnterGameLoop(&fsm);
 

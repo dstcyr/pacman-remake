@@ -155,13 +155,19 @@
     <ClCompile Include="Sources\Game.cpp" />
     <ClCompile Include="Sources\Level.cpp" />
     <ClCompile Include="Sources\Menu.cpp" />
+    <ClCompile Include="Sources\MovingObject.cpp" />
     <ClCompile Include="Sources\Pacman.cpp" />
+    <ClCompile Include="Sources\Player.cpp" />
+    <ClCompile Include="Sources\SaveGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Config.h" />
     <ClInclude Include="Sources\Game.h" />
     <ClInclude Include="Sources\Level.h" />
     <ClInclude Include="Sources\Menu.h" />
+    <ClInclude Include="Sources\MovingObject.h" />
+    <ClInclude Include="Sources\Player.h" />
+    <ClInclude Include="Sources\SaveGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
