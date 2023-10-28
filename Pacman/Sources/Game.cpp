@@ -6,6 +6,7 @@ void Game::OnEnter()
     Level::Get().Reset();
     m_background = Engine::LoadTexture("Assets/Images/Background.png");
     m_flash = Engine::LoadTexture("Assets/Images/Flash.png");
+    m_currentBackground = m_background;
 
     m_whiteFont = Engine::LoadFont("Assets/Fonts/8bitwonder.ttf", "whitefont", 32, NColor::White);
     m_orangeFont = Engine::LoadFont("Assets/Fonts/8bitwonder.ttf", "redfont", 32, NColor(224, 80, 0, 255));
@@ -19,10 +20,18 @@ void Game::OnEnter()
     m_playerReady = false;
     m_playerReadyDelay = 0.0f;
     m_player.Initialize();
+
+    m_levelCleared = false;
+    m_flashElapsed = 0.0f;
 }
 
 void Game::OnUpdate(float dt)
 {
+    if (Engine::GetKeyDown(KEY_1))
+    {
+        Level::Get().RemoveNPills(10);
+    }
+
     if (!m_playerReady)
     {
         m_playerReadyDelay += dt;
@@ -30,17 +39,38 @@ void Game::OnUpdate(float dt)
         {
             m_playerReadyDelay = 0.0f;
             m_playerReady = true;
+            m_player.Start();
+        }
+    }
+    else if (m_levelCleared)
+    {
+        m_flashElapsed += dt;
+        m_flashTotalDelay += dt;
+        if (m_flashElapsed > 0.1f)
+        {
+            m_flashElapsed = 0.0f;
+            m_currentBackground = (m_currentBackground == m_background) ? m_flash : m_background;
+        }
+        if (m_flashTotalDelay > 3.0f)
+        {
+            Engine::SetState("game");
         }
     }
     else
     {
         m_player.Update(dt);
+        m_levelCleared = Level::Get().CheckLevelClear();
+        if (m_levelCleared)
+        {
+            m_player.Idle();
+            m_player.Stop();
+        }
     }
 }
 
 void Game::OnRender()
 {
-    Engine::DrawTexture(m_background, 0.0f, 0.0f, 35.0f * 21.0f, 35.0f * 27.0f);
+    Engine::DrawTexture(m_currentBackground, 0.0f, 0.0f, 35.0f * 21.0f, 35.0f * 27.0f);
     Level::Get().Render();
 
     if (!m_playerReady)

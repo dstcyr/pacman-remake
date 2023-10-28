@@ -23,7 +23,7 @@ void Menu::OnUpdate(float dt)
 
 void Menu::OnRender()
 {
-    Engine::DrawTexture(m_mockup, false, false, NColor(255, 255, 255, 60));
+    //Engine::DrawTexture(m_mockup, false, false, NColor(255, 255, 255, 60));
     Engine::DrawTexture(m_title, 160, 210);
 
     Engine::DrawString("HIGH SCORE", m_orangeFont, 350.0f, 70.0f);

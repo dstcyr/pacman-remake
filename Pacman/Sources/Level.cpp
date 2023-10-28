@@ -120,11 +120,6 @@ void Level::ToWorld(const int localX, const int localY, float* worldX, float* wo
     *worldY = static_cast<float>(localY * m_tileHeight) + m_offsetY;
 }
 
-bool Level::CheckCollision(float x, float y, float w, float h, int* id) const
-{
-    return false;
-}
-
 int Level::GetTileAt(int x, int y)
 {
     int idx = GetIndexFromPosition(x, y);
@@ -151,6 +146,45 @@ void Level::SetTile(int x, int y, ETile tileValue)
     if (idx < static_cast<int>(m_gridData.size()))
     {
         m_gridData[idx] = tileValue;
+    }
+}
+
+bool Level::CheckLevelClear()
+{
+    for (int y = 0; y < m_height; y++)
+    {
+        for (int x = 0; x < m_width; x++)
+        {
+            int idx = GetIndexFromPosition(x, y);
+            if (m_gridData[idx] == PILL_TILE || m_gridData[idx] == POWER_TILE)
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+void Level::RemoveNPills(int count)
+{
+    int removed = 0;
+    for (int y = 0; y < m_height; y++)
+    {
+        for (int x = 0; x < m_width; x++)
+        {
+            int idx = GetIndexFromPosition(x, y);
+            if (m_gridData[idx] == PILL_TILE || m_gridData[idx] == POWER_TILE)
+            {
+                m_gridData[idx] = EMPTY_TILE;
+                removed++;
+
+                if (removed >= count)
+                {
+                    return;
+                }
+            }
+        }
     }
 }
 
