@@ -30,7 +30,7 @@ void Level::Reset()
         1,1,1,1,1,3,1,0,0,0,0,0,0,0,1,3,1,1,1,1,1,
         1,1,1,1,1,3,1,0,1,1,0,1,1,0,1,3,1,1,1,1,1,
         1,1,1,1,1,3,1,0,1,0,0,0,1,0,1,3,1,1,1,1,1,
-        0,0,0,0,0,3,0,0,1,0,0,0,1,0,0,3,0,0,0,0,0,
+        0,0,0,0,1,3,0,0,1,0,0,0,1,0,0,3,1,0,0,0,0,
         1,1,1,1,1,3,1,0,1,1,1,1,1,0,1,3,1,1,1,1,1,
         1,1,1,1,1,3,1,0,0,0,0,0,0,0,1,3,1,1,1,1,1,
         1,1,1,1,1,3,1,0,1,1,1,1,1,0,1,3,1,1,1,1,1,
@@ -186,6 +186,21 @@ void Level::RemoveNPills(int count)
             }
         }
     }
+}
+
+std::vector<int>& Level::GetData()
+{
+    return m_gridData;
+}
+
+int Level::GetWidth() const
+{
+    return m_width;
+}
+
+int Level::GetHeight() const
+{
+    return m_height;
 }
 
 void Level::ToLocal(const float worldX, const float worldY, int* localX, int* localY) const

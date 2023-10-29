@@ -27,6 +27,11 @@ public:
     bool CheckLevelClear();
 
     void RemoveNPills(int param1);
+    std::vector<int>& GetData();
+
+    int GetWidth() const;
+    int GetHeight() const;
+
 private:
     Level() = default;
     Level(const Level& other) = default;

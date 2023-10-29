@@ -19,7 +19,8 @@ void Game::OnEnter()
 
     m_playerReady = false;
     m_playerReadyDelay = 0.0f;
-    m_player.Initialize();
+
+    m_entityMgr.Initialize();
 
     m_levelCleared = false;
     m_flashElapsed = 0.0f;
@@ -39,7 +40,7 @@ void Game::OnUpdate(float dt)
         {
             m_playerReadyDelay = 0.0f;
             m_playerReady = true;
-            m_player.Start();
+            m_entityMgr.Start();
         }
     }
     else if (m_levelCleared)
@@ -58,12 +59,13 @@ void Game::OnUpdate(float dt)
     }
     else
     {
-        m_player.Update(dt);
+        m_entityMgr.Update(dt);
+
         m_levelCleared = Level::Get().CheckLevelClear();
         if (m_levelCleared)
         {
-            m_player.Idle();
-            m_player.Stop();
+            m_entityMgr.StopMovement();
+            m_entityMgr.PauseAnimations();
         }
     }
 }
@@ -79,7 +81,7 @@ void Game::OnRender()
         Engine::DrawString("READY!", m_peachFont, 285.0f, 530.0f);
     }
 
-    m_player.Render();
+    m_entityMgr.Render();
 }
 
 void Game::OnExit()

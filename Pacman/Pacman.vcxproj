@@ -152,18 +152,32 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Blinky.cpp" />
+    <ClCompile Include="Sources\Inky.cpp" />
+    <ClCompile Include="Sources\Clyde.cpp" />
+    <ClCompile Include="Sources\Entity.cpp" />
+    <ClCompile Include="Sources\EntityManager.cpp" />
     <ClCompile Include="Sources\Game.cpp" />
+    <ClCompile Include="Sources\Ghost.cpp" />
     <ClCompile Include="Sources\Level.cpp" />
     <ClCompile Include="Sources\Menu.cpp" />
     <ClCompile Include="Sources\Pacman.cpp" />
+    <ClCompile Include="Sources\Pinky.cpp" />
     <ClCompile Include="Sources\Player.cpp" />
     <ClCompile Include="Sources\SaveGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Blinky.h" />
+    <ClInclude Include="Sources\Inky.h" />
+    <ClInclude Include="Sources\Clyde.h" />
     <ClInclude Include="Sources\Config.h" />
+    <ClInclude Include="Sources\Entity.h" />
+    <ClInclude Include="Sources\EntityManager.h" />
     <ClInclude Include="Sources\Game.h" />
+    <ClInclude Include="Sources\Ghost.h" />
     <ClInclude Include="Sources\Level.h" />
     <ClInclude Include="Sources\Menu.h" />
+    <ClInclude Include="Sources\Pinky.h" />
     <ClInclude Include="Sources\Player.h" />
     <ClInclude Include="Sources\SaveGame.h" />
   </ItemGroup>

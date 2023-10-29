@@ -3,7 +3,7 @@
 #include "StateMachine.h"
 #include "Level.h"
 #include "Game.h"
-#include "Player.h"
+#include "EntityManager.h"
 
 class Game : public IState
 {
@@ -25,7 +25,7 @@ private:
     bool m_playerReady;
     bool m_levelCleared;
     float m_playerReadyDelay;
-    Player m_player;
     float m_flashElapsed;
     float m_flashTotalDelay;
+    EntityManager m_entityMgr;
 };

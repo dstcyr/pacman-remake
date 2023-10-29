@@ -1,31 +1,25 @@
 #pragma once
+#include <vector>
+#include "Entity.h"
 #include "Animation.h"
 
-class Player
+class Player : public Entity
 {
 public:
-    void Initialize();
-    void Update(float dt);
-    void Render();
-    void Stop();
+    Player();
+    Player(int x, int y);
+    void Initialize() override;
+    void Update(float dt) override;
+    void Render() override;
+    void Start() override;
     void Idle();
-    void Start();
 
 private:
-    Animation m_playerAnim;
-    float m_pixelX;
-    float m_pixelY;
-    int m_gridX;
-    int m_gridY;
     size_t m_eatA;
     size_t m_eatB;
     bool m_eatToggle;
+    Animation m_playerAnim;
 
-    bool IsStopped();
     void UpdateInputs();
-    void UpdateMovements(float dt);
     void PlayEatSFX();
-    void UpdateInterpolation(int param1, int param2);
-    void SetDirection(int param1, int param2);
-    bool CheckCollision(int x, int y);
 };
