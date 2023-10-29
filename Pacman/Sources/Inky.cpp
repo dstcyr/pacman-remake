@@ -29,6 +29,21 @@ void Inky::Start()
 
 void Inky::ChooseNextAction()
 {
+    // Inky's behavior in the original Pac-Man game is more complex, as it depends
+    // on the positions of both Blinky and Clyde. Inky's movement is influenced by
+    // the following logic:
+    //  - Inky first calculates a target point that is two grid spaces in front of
+    //    Pac-Man's current direction. This position is represented as a potential
+    //    destination for Inky.
+    //
+    //  - Inky then considers the current positions of Blinky and Clyde. He draws a
+    //    vector from Blinky to Clyde and doubles its length.This extended vector is
+    //    used to modify the target point.
+    //
+    // The result is a new target point for Inky, which is two grid spaces in front
+    // of Pac-Man's current direction, but also influenced by the position of Blinky
+    // and Clyde.
+
     if (m_playerPtr)
     {
         int px, py;

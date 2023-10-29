@@ -31,6 +31,7 @@ void Clyde::Start()
 
 void Clyde::ChooseNextAction()
 {
+    // Clyde uses random directions in the maze
     if (m_playerPtr)
     {
         int px, py;

@@ -35,6 +35,7 @@ void Blinky::Start()
 
 void Blinky::ChooseNextAction()
 {
+    // Blinky's main objective is to directly pursue Pac-Man.
     if (m_playerPtr)
     {
         int px, py;
