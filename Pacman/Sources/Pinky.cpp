@@ -26,7 +26,7 @@ void Pinky::Start()
     ChooseNextAction();
 }
 
-void Pinky::ChooseNextAction()
+void Pinky::ExecuteBehaviour()
 {
     // Pinky is known for her unique behavior, which involves trying to position herself
     // in front of Pac-Man. Implementing Pinky's behavior in code can be achieved by calculating
@@ -89,10 +89,14 @@ void Pinky::ChooseNextAction()
 
         if (CanMove(EEntityDirection::MOVING_DOWN) && m_direction != EEntityDirection::MOVING_UP)
         {
-            int h = Engine::Heuristic(m_localX, m_localY + 1, targetX, targetY);
-            if (h < selection.second)
+            // Don't go down in the middle when not dead
+            if (!(m_localX == 10 && m_localY == 10))
             {
-                selection = { EEntityDirection::MOVING_DOWN, h };
+                int h = Engine::Heuristic(m_localX, m_localY + 1, targetX, targetY);
+                if (h < selection.second)
+                {
+                    selection = { EEntityDirection::MOVING_DOWN, h };
+                }
             }
         }
 

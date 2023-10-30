@@ -213,3 +213,13 @@ int Level::GetIndexFromPosition(int x, int y) const
 {
     return x + m_width * y;
 }
+
+float Level::CellWidth()
+{
+    return static_cast<float>(m_tileWidth);
+}
+
+float Level::CellHeight()
+{
+    return static_cast<float>(m_tileHeight);
+}

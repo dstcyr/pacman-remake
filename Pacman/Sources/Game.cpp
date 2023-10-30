@@ -21,9 +21,11 @@ void Game::OnEnter()
     m_playerReadyDelay = 0.0f;
 
     m_entityMgr.Initialize();
+    m_entityMgr.OnPlayerDie.Bind(this, &Game::OnPlayerDie);
 
     m_levelCleared = false;
     m_flashElapsed = 0.0f;
+    m_playerDied = false;
 }
 
 void Game::OnUpdate(float dt)
@@ -57,6 +59,10 @@ void Game::OnUpdate(float dt)
             Engine::SetState("game");
         }
     }
+    else if (m_playerDied)
+    {
+        Engine::SetState("game");
+    }
     else
     {
         m_entityMgr.Update(dt);
@@ -86,4 +92,11 @@ void Game::OnRender()
 
 void Game::OnExit()
 {
+    m_entityMgr.Clear();
+}
+
+void Game::OnPlayerDie(const Event& e)
+{
+    // For now, reset the game
+    m_playerDied = true;
 }

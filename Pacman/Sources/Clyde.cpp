@@ -29,7 +29,7 @@ void Clyde::Start()
     ChooseNextAction();
 }
 
-void Clyde::ChooseNextAction()
+void Clyde::ExecuteBehaviour()
 {
     // Clyde uses random directions in the maze
     if (m_playerPtr)
@@ -61,14 +61,18 @@ void Clyde::ChooseNextAction()
 
         if (CanMove(EEntityDirection::MOVING_DOWN) && m_direction != EEntityDirection::MOVING_UP)
         {
-            availableDirections.emplace_back(EEntityDirection::MOVING_DOWN,
-                Engine::Heuristic(m_localX, m_localY + 1, px, py)
-            );
+            // Don't go down in the middle when not dead
+            if (!(m_localX == 10 && m_localY == 10))
+            {
+                availableDirections.emplace_back(EEntityDirection::MOVING_DOWN,
+                    Engine::Heuristic(m_localX, m_localY + 1, px, py)
+                );
+            }
         }
 
         if (!availableDirections.empty())
         {
-            int nextAction = Engine::RandRange(0, availableDirections.size() - 1);
+            int nextAction = Engine::RandRange(0, static_cast<int>(availableDirections.size()) - 1);
             SetupInterpolation(availableDirections[nextAction].first);
             SetDirection(availableDirections[nextAction].first);
             SetAnimation(m_direction);

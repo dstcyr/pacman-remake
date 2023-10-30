@@ -27,7 +27,7 @@ void Inky::Start()
     ChooseNextAction();
 }
 
-void Inky::ChooseNextAction()
+void Inky::ExecuteBehaviour()
 {
     // Inky's behavior in the original Pac-Man game is more complex, as it depends
     // on the positions of both Blinky and Clyde. Inky's movement is influenced by
@@ -91,10 +91,14 @@ void Inky::ChooseNextAction()
 
         if (CanMove(EEntityDirection::MOVING_DOWN) && m_direction != EEntityDirection::MOVING_UP)
         {
-            int h = Engine::Heuristic(m_localX, m_localY + 1, targeyX, targeyY);
-            if (h < selection.second)
+            // Don't go down in the middle when not dead
+            if (!(m_localX == 10 && m_localY == 10))
             {
-                selection = { EEntityDirection::MOVING_DOWN, h };
+                int h = Engine::Heuristic(m_localX, m_localY + 1, targeyX, targeyY);
+                if (h < selection.second)
+                {
+                    selection = { EEntityDirection::MOVING_DOWN, h };
+                }
             }
         }
 

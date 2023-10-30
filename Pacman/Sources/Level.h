@@ -31,6 +31,8 @@ public:
 
     int GetWidth() const;
     int GetHeight() const;
+    float CellWidth();
+    float CellHeight();
 
 private:
     Level() = default;

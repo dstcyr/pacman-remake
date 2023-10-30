@@ -15,7 +15,7 @@ public:
     void Start() override;
 
 protected:
-    void ChooseNextAction() override;
+    void ExecuteBehaviour() override;
 
 private:
     Blinky* m_blinky;

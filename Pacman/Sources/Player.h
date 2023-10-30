@@ -2,6 +2,7 @@
 #include <vector>
 #include "Entity.h"
 #include "Animation.h"
+#include "Delegate.h"
 
 class Player : public Entity
 {
@@ -13,6 +14,8 @@ public:
     void Render() override;
     void Start() override;
     void Idle();
+
+    CDelegate OnPowerActivated;
 
 private:
     size_t m_eatA;

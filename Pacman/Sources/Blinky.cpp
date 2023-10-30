@@ -33,7 +33,7 @@ void Blinky::Start()
     SetAnimation(m_direction);
 }
 
-void Blinky::ChooseNextAction()
+void Blinky::ExecuteBehaviour()
 {
     // Blinky's main objective is to directly pursue Pac-Man.
     if (m_playerPtr)
@@ -72,10 +72,14 @@ void Blinky::ChooseNextAction()
 
         if (CanMove(EEntityDirection::MOVING_DOWN) && m_direction != EEntityDirection::MOVING_UP)
         {
-            int h = Engine::Heuristic(m_localX, m_localY + 1, px, py);
-            if (h < selection.second)
+            // Don't go down in the middle when not dead
+            if (!(m_localX == 10 && m_localY == 10))
             {
-                selection = { EEntityDirection::MOVING_DOWN, h };
+                int h = Engine::Heuristic(m_localX, m_localY + 1, px, py);
+                if (h < selection.second)
+                {
+                    selection = { EEntityDirection::MOVING_DOWN, h };
+                }
             }
         }
 

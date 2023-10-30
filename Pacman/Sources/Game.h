@@ -4,6 +4,7 @@
 #include "Level.h"
 #include "Game.h"
 #include "EntityManager.h"
+#include "Delegate.h"
 
 class Game : public IState
 {
@@ -27,5 +28,8 @@ private:
     float m_playerReadyDelay;
     float m_flashElapsed;
     float m_flashTotalDelay;
+    bool m_playerDied;
     EntityManager m_entityMgr;
+
+    void OnPlayerDie(const Event& e);
 };

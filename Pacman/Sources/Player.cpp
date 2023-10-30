@@ -46,10 +46,17 @@ void Player::Update(float dt)
         if (m_interpTime >= m_interpSpeed)
         {
             int tile = Level::Get().GetTileAt(m_localX, m_localY);
-            if (tile == PILL_TILE || tile == POWER_TILE)
+            if (tile == PILL_TILE)
             {
                 Level::Get().SetTile(m_localX, m_localY, EMPTY_TILE);
                 PlayEatSFX();
+            }
+
+            if (tile == POWER_TILE)
+            {
+                Level::Get().SetTile(m_localX, m_localY, EMPTY_TILE);
+                PlayEatSFX();
+                OnPowerActivated.Invoke<Event>();
             }
 
             if (m_localX == 1 && m_localY == 13)
