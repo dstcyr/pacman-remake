@@ -28,8 +28,8 @@ private:
     float m_playerReadyDelay;
     float m_flashElapsed;
     float m_flashTotalDelay;
-    bool m_playerDied;
     EntityManager m_entityMgr;
+    bool m_PlayerDied;
 
-    void OnPlayerDie(const Event& e);
+    void OnPlayerDied(const Event& e);
 };

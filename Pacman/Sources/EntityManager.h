@@ -18,7 +18,7 @@ public:
     void PauseAnimations();
     void Clear();
 
-    CDelegate OnPlayerDie;
+    CDelegate OnPlayerDied;
 
 private:
     std::vector<Entity*> m_activeEntity;
@@ -26,7 +26,14 @@ private:
     Player* m_player;
     float m_powerElapsed;
     bool m_powerActivated;
-    bool m_playerDead;
+
+    bool m_playerCaught;
+    float m_playerCaughtElapsed;
+
+    bool m_playerDie;
+    float m_playerDieElapsed;
+
+    bool m_GameStopped;
 
     void OnPowerActivated(const Event& e);
 };

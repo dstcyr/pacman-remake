@@ -25,128 +25,139 @@ void Player::Initialize()
     m_playerAnim.AddClip("idle_up", 7, 1, animSpeed);
     m_playerAnim.AddClip("down", 9, 3, animSpeed);
     m_playerAnim.AddClip("idle_down", 10, 1, animSpeed);
+    m_playerAnim.AddClip("die", 12, 11, 0.17f);
     m_playerAnim.Play("idle_left", false);
 
     m_eatA = Engine::LoadSound("Assets/Audio/eatA.wav");
     Engine::SetVolume(m_eatA, 50);
     m_eatB = Engine::LoadSound("Assets/Audio/eatB.wav");
     Engine::SetVolume(m_eatB, 50);
+    m_playerDiedSfx = Engine::LoadSound("Assets/Audio/playerdied.wav");
+    Engine::SetVolume(m_playerDiedSfx, 50);
     m_eatToggle = true;
+    m_dead = false;
 }
 
 void Player::Update(float dt)
 {
-    UpdateInputs();
-
-    if (!IsStopped())
+    if (m_dead)
     {
-        UpdateInterpolation(dt);
         m_playerAnim.Update(dt);
+    }
+    else
+    {
+        UpdateInputs();
 
-        if (m_interpTime >= m_interpSpeed)
+        if (!IsStopped())
         {
-            int tile = Level::Get().GetTileAt(m_localX, m_localY);
-            if (tile == PILL_TILE)
+            UpdateInterpolation(dt);
+            m_playerAnim.Update(dt);
+
+            if (m_interpTime >= m_interpSpeed)
             {
-                Level::Get().SetTile(m_localX, m_localY, EMPTY_TILE);
-                PlayEatSFX();
-            }
-
-            if (tile == POWER_TILE)
-            {
-                Level::Get().SetTile(m_localX, m_localY, EMPTY_TILE);
-                PlayEatSFX();
-                OnPowerActivated.Invoke<Event>();
-            }
-
-            if (m_localX == 1 && m_localY == 13)
-            {
-                m_localX = 19;
-                m_localY = 13;
-
-                Level::Get().Transform(m_localX, m_localY, &m_worldX, &m_worldY);
-                m_interpStartX = m_worldX;
-                m_interpStartY = m_worldY;
-
-                Level::Get().Transform(m_localX - 1, m_localY, &m_interpEndX, &m_interpEndY);
-                m_interpTime = 0;
-            }
-            else if (m_localX == 19 && m_localY == 13)
-            {
-                m_localX = 1;
-                m_localY = 13;
-
-                Level::Get().Transform(m_localX, m_localY, &m_worldX, &m_worldY);
-                m_interpStartX = m_worldX;
-                m_interpStartY = m_worldY;
-
-                Level::Get().Transform(m_localX - 1, m_localY, &m_interpEndX, &m_interpEndY);
-                m_interpTime = 0;
-            }
-
-            if (m_directionX == -1)
-            {
-                if (!CheckCollision(m_localX - 1, m_localY))
+                int tile = Level::Get().GetTileAt(m_localX, m_localY);
+                if (tile == PILL_TILE)
                 {
-                    SetupInterpolation(-1, 0);
-                    SetDirection(-1, 0);
-                    m_interpTime = 0.0f;
-                    m_playerAnim.Play("left", true);
+                    Level::Get().SetTile(m_localX, m_localY, EMPTY_TILE);
+                    PlayEatSFX();
+                }
+
+                if (tile == POWER_TILE)
+                {
+                    Level::Get().SetTile(m_localX, m_localY, EMPTY_TILE);
+                    PlayEatSFX();
+                    OnPowerActivated.Invoke<Event>();
+                }
+
+                if (m_localX == 1 && m_localY == 13)
+                {
+                    m_localX = 19;
+                    m_localY = 13;
+
+                    Level::Get().Transform(m_localX, m_localY, &m_worldX, &m_worldY);
+                    m_interpStartX = m_worldX;
+                    m_interpStartY = m_worldY;
+
+                    Level::Get().Transform(m_localX - 1, m_localY, &m_interpEndX, &m_interpEndY);
+                    m_interpTime = 0;
+                }
+                else if (m_localX == 19 && m_localY == 13)
+                {
+                    m_localX = 1;
+                    m_localY = 13;
+
+                    Level::Get().Transform(m_localX, m_localY, &m_worldX, &m_worldY);
+                    m_interpStartX = m_worldX;
+                    m_interpStartY = m_worldY;
+
+                    Level::Get().Transform(m_localX - 1, m_localY, &m_interpEndX, &m_interpEndY);
+                    m_interpTime = 0;
+                }
+
+                if (m_directionX == -1)
+                {
+                    if (!CheckCollision(m_localX - 1, m_localY))
+                    {
+                        SetupInterpolation(-1, 0);
+                        SetDirection(-1, 0);
+                        m_interpTime = 0.0f;
+                        m_playerAnim.Play("left", true);
+                    }
+                    else
+                    {
+                        Stop();
+                        m_playerAnim.Play("idle_left", false);
+                    }
+                }
+                else if (m_directionX == 1)
+                {
+                    if (!CheckCollision(m_localX + 1, m_localY))
+                    {
+                        SetupInterpolation(1, 0);
+                        SetDirection(1, 0);
+                        m_interpTime = 0.0f;
+                        m_playerAnim.Play("right", true);
+                    }
+                    else
+                    {
+                        Stop();
+                        m_playerAnim.Play("idle_right", false);
+                    }
+                }
+                else if (m_directionY == -1)
+                {
+                    if (!CheckCollision(m_localX, m_localY - 1))
+                    {
+                        SetupInterpolation(0, -1);
+                        SetDirection(0, -1);
+                        m_interpTime = 0.0f;
+                        m_playerAnim.Play("up", true);
+                    }
+                    else
+                    {
+                        Stop();
+                        m_playerAnim.Play("idle_up", false);
+                    }
+                }
+                else if (m_directionY == 1)
+                {
+                    if (!CheckCollision(m_localX, m_localY + 1))
+                    {
+                        SetupInterpolation(0, 1);
+                        SetDirection(0, 1);
+                        m_interpTime = 0.0f;
+                        m_playerAnim.Play("down", true);
+                    }
+                    else
+                    {
+                        Stop();
+                        m_playerAnim.Play("idle_down", false);
+                    }
                 }
                 else
                 {
                     Stop();
-                    m_playerAnim.Play("idle_left", false);
                 }
-            }
-            else if (m_directionX == 1)
-            {
-                if (!CheckCollision(m_localX + 1, m_localY))
-                {
-                    SetupInterpolation(1, 0);
-                    SetDirection(1, 0);
-                    m_interpTime = 0.0f;
-                    m_playerAnim.Play("right", true);
-                }
-                else
-                {
-                    Stop();
-                    m_playerAnim.Play("idle_right", false);
-                }
-            }
-            else if (m_directionY == -1)
-            {
-                if (!CheckCollision(m_localX, m_localY - 1))
-                {
-                    SetupInterpolation(0, -1);
-                    SetDirection(0, -1);
-                    m_interpTime = 0.0f;
-                    m_playerAnim.Play("up", true);
-                }
-                else
-                {
-                    Stop();
-                    m_playerAnim.Play("idle_up", false);
-                }
-            }
-            else if (m_directionY == 1)
-            {
-                if (!CheckCollision(m_localX, m_localY + 1))
-                {
-                    SetupInterpolation(0, 1);
-                    SetDirection(0, 1);
-                    m_interpTime = 0.0f;
-                    m_playerAnim.Play("down", true);
-                }
-                else
-                {
-                    Stop();
-                    m_playerAnim.Play("idle_down", false);
-                }
-            }
-            else
-            {
-                Stop();
             }
         }
     }
@@ -194,6 +205,13 @@ void Player::Idle()
             m_playerAnim.Play("idle_up", true);
         }
     }
+}
+
+void Player::Die()
+{
+    m_dead = true;
+    m_playerAnim.Play("die", false);
+    Engine::PlaySFX(m_playerDiedSfx);
 }
 
 void Player::UpdateInputs()

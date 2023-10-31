@@ -16,6 +16,9 @@ void EntityManager::Initialize()
 {
     m_powerElapsed = 0.0f;
     m_powerActivated = false;
+    m_playerCaught = false;
+    m_playerDie = false;
+    m_GameStopped = false;
 
     m_player = new Player(10, 20);
     m_player->OnPowerActivated.Bind(this, &EntityManager::OnPowerActivated);
@@ -41,71 +44,99 @@ void EntityManager::Initialize()
     {
         entity->Initialize();
     }
-
-    m_playerDead = false;
 }
 
 void EntityManager::Update(float dt)
 {
-    if(m_playerDead) return;
+    if(m_GameStopped) return;
 
-    if (m_powerActivated)
+    if (m_playerDie)
     {
-        m_powerElapsed += dt;
-        if (m_powerElapsed >= 8.0f)
+        m_player->Update(dt);
+        m_playerDieElapsed += dt;
+        if (m_playerDieElapsed >= 4.0f)
         {
-            LOG(LL_DEBUG, "Deactivate Power");
-            m_powerElapsed = 0.0f;
-            m_powerActivated = false;
-            for (Ghost* ghost : m_activeGhost)
-            {
-                EGhostState currentState = ghost->GetState();
-                if (currentState != EGhostState::DEAD)
-                {
-                    ghost->SetState(EGhostState::CHASE);
-                }
-            }
+            m_GameStopped = true;
+            OnPlayerDied.Invoke<Event>();
         }
-        else if (m_powerElapsed >= 5.0f)
+    }
+    else if (m_playerCaught)
+    {
+        m_playerCaughtElapsed += dt;
+        if (m_playerCaughtElapsed >= 2.0f)
         {
             for (Ghost* ghost : m_activeGhost)
             {
-                EGhostState currentState = ghost->GetState();
-                if (currentState == EGhostState::FLEE)
+                ghost->Hide();
+            }
+
+            m_player->Die();
+            m_playerDie = true;
+            m_playerDieElapsed = 0.0f;
+        }
+    }
+    else
+    {
+        if (m_powerActivated)
+        {
+            m_powerElapsed += dt;
+            if (m_powerElapsed >= 8.0f)
+            {
+                LOG(LL_DEBUG, "Deactivate Power");
+                m_powerElapsed = 0.0f;
+                m_powerActivated = false;
+                for (Ghost* ghost : m_activeGhost)
                 {
-                    ghost->Flash();
+                    EGhostState currentState = ghost->GetState();
+                    if (currentState != EGhostState::DEAD)
+                    {
+                        ghost->SetState(EGhostState::CHASE);
+                    }
+                }
+            }
+            else if (m_powerElapsed >= 5.0f)
+            {
+                for (Ghost* ghost : m_activeGhost)
+                {
+                    EGhostState currentState = ghost->GetState();
+                    if (currentState == EGhostState::FLEE)
+                    {
+                        ghost->Flash();
+                    }
                 }
             }
         }
-    }
 
-    for (Entity* entity : m_activeEntity)
-    {
-        entity->Update(dt);
-    }
-
-    int px, py;
-    m_player->GetPosition(&px, &py);
-    for (Ghost* ghost : m_activeGhost)
-    {
-        EGhostState state = ghost->GetState();
-        if (state != EGhostState::DEAD)
+        for (Entity* entity : m_activeEntity)
         {
-            int gx, gy;
-            ghost->GetPosition(&gx, &gy);
+            entity->Update(dt);
+        }
 
-            if (gx == px && py == gy)
+        int px, py;
+        m_player->GetPosition(&px, &py);
+        for (Ghost* ghost : m_activeGhost)
+        {
+            EGhostState state = ghost->GetState();
+            if (state != EGhostState::DEAD)
             {
-                if (state == EGhostState::CHASE)
+                int gx, gy;
+                ghost->GetPosition(&gx, &gy);
+
+                if (gx == px && py == gy)
                 {
-                    // Player dies
-                    m_playerDead = true;
-                    OnPlayerDie.Invoke<Event>();
-                }
-                else if (state == EGhostState::FLEE)
-                {
-                    // Ghost dies
-                    ghost->Kill();
+                    if (state == EGhostState::CHASE)
+                    {
+                        if (!m_player->IsDead())
+                        {
+                            m_playerCaught = true;
+                            m_playerCaughtElapsed = 0.0f;
+                        }
+                    }
+                    else if (state == EGhostState::FLEE)
+                    {
+                        // Ghost dies
+                        ghost->Kill();
+                    }
                 }
             }
         }

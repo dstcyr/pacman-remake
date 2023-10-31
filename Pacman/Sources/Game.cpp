@@ -21,57 +21,60 @@ void Game::OnEnter()
     m_playerReadyDelay = 0.0f;
 
     m_entityMgr.Initialize();
-    m_entityMgr.OnPlayerDie.Bind(this, &Game::OnPlayerDie);
+    m_entityMgr.OnPlayerDied.Bind(this, &Game::OnPlayerDied);
 
     m_levelCleared = false;
     m_flashElapsed = 0.0f;
-    m_playerDied = false;
+    m_PlayerDied = false;
 }
 
 void Game::OnUpdate(float dt)
 {
-    if (Engine::GetKeyDown(KEY_1))
-    {
-        Level::Get().RemoveNPills(10);
-    }
-
-    if (!m_playerReady)
-    {
-        m_playerReadyDelay += dt;
-        if (m_playerReadyDelay >= 4.0f)
-        {
-            m_playerReadyDelay = 0.0f;
-            m_playerReady = true;
-            m_entityMgr.Start();
-        }
-    }
-    else if (m_levelCleared)
-    {
-        m_flashElapsed += dt;
-        m_flashTotalDelay += dt;
-        if (m_flashElapsed > 0.1f)
-        {
-            m_flashElapsed = 0.0f;
-            m_currentBackground = (m_currentBackground == m_background) ? m_flash : m_background;
-        }
-        if (m_flashTotalDelay > 3.0f)
-        {
-            Engine::SetState("game");
-        }
-    }
-    else if (m_playerDied)
+    if (m_PlayerDied)
     {
         Engine::SetState("game");
     }
     else
     {
-        m_entityMgr.Update(dt);
-
-        m_levelCleared = Level::Get().CheckLevelClear();
-        if (m_levelCleared)
+        if (Engine::GetKeyDown(KEY_1))
         {
-            m_entityMgr.StopMovement();
-            m_entityMgr.PauseAnimations();
+            Level::Get().RemoveNPills(10);
+        }
+
+        if (!m_playerReady)
+        {
+            m_playerReadyDelay += dt;
+            if (m_playerReadyDelay >= 4.0f)
+            {
+                m_playerReadyDelay = 0.0f;
+                m_playerReady = true;
+                m_entityMgr.Start();
+            }
+        }
+        else if (m_levelCleared)
+        {
+            m_flashElapsed += dt;
+            m_flashTotalDelay += dt;
+            if (m_flashElapsed > 0.1f)
+            {
+                m_flashElapsed = 0.0f;
+                m_currentBackground = (m_currentBackground == m_background) ? m_flash : m_background;
+            }
+            if (m_flashTotalDelay > 3.0f)
+            {
+                Engine::SetState("game");
+            }
+        }
+        else
+        {
+            m_entityMgr.Update(dt);
+
+            m_levelCleared = Level::Get().CheckLevelClear();
+            if (m_levelCleared)
+            {
+                m_entityMgr.StopMovement();
+                m_entityMgr.PauseAnimations();
+            }
         }
     }
 }
@@ -95,8 +98,7 @@ void Game::OnExit()
     m_entityMgr.Clear();
 }
 
-void Game::OnPlayerDie(const Event& e)
+void Game::OnPlayerDied(const Event& e)
 {
-    // For now, reset the game
-    m_playerDied = true;
+    m_PlayerDied = true;
 }

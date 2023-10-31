@@ -37,6 +37,7 @@ protected:
     EGhostState m_state;
     bool m_StartFleeing;
     bool m_exiting;
+    bool m_hide;
 
     void NextLocationOnPath();
     virtual void ChooseNextAction();
@@ -45,4 +46,7 @@ protected:
 
     virtual void ExecuteBehaviour() = 0;
     void MoveAwayFromPlayer();
+
+public:
+    void Hide();
 };

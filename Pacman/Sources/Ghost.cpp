@@ -69,6 +69,8 @@ void Ghost::Update(float dt)
 
 void Ghost::Render()
 {
+    if(m_hide) return;
+
     //float wX, wY;
     //Level::Get().Transform(m_localX, m_localY, &wX, &wY);
     //Engine::DrawCircle(wX, wY, 8.0f, NColor::Red);
@@ -389,4 +391,9 @@ void Ghost::MoveAwayFromPlayer()
             SetAnimation(m_direction);
         }
     }
+}
+
+void Ghost::Hide()
+{
+    m_hide = true;
 }
