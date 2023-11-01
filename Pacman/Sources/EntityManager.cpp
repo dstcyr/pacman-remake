@@ -5,6 +5,8 @@
 #include "Inky.h"
 #include "Pinky.h"
 #include "Log.h"
+#include "MathUtils.h"
+#include "SaveGame.h"
 
 EntityManager& EntityManager::Get()
 {
@@ -48,7 +50,7 @@ void EntityManager::Initialize()
 
 void EntityManager::Update(float dt)
 {
-    if(m_GameStopped) return;
+    if (m_GameStopped) return;
 
     if (m_playerDie)
     {
@@ -124,6 +126,7 @@ void EntityManager::Update(float dt)
 
                 if (gx == px && py == gy)
                 {
+#if !INVINSIBLE
                     if (state == EGhostState::CHASE)
                     {
                         if (!m_player->IsDead())
@@ -135,8 +138,17 @@ void EntityManager::Update(float dt)
                     else if (state == EGhostState::FLEE)
                     {
                         // Ghost dies
+                        // First blue ghost : 200 points
+                        // Second blue ghost : 400 points
+                        // Third blue ghost : 800 points
+                        // Fourth blue ghost : 1600 points
+                        static int scores[4] = { 200, 400, 800, 1600 };
+                        SaveGame::AddScore(scores[m_ghostEaten]);
+                        m_ghostEaten = Engine::Clamp(m_ghostEaten + 1, 0, 3);
+
                         ghost->Kill();
                     }
+#endif
                 }
             }
         }
@@ -188,6 +200,7 @@ void EntityManager::OnPowerActivated(const Event& e)
     LOG(LL_DEBUG, "Activate Power");
     m_powerElapsed = 0.0f;
     m_powerActivated = true;
+    m_ghostEaten = 0;
 
     for (Ghost* ghost : m_activeGhost)
     {

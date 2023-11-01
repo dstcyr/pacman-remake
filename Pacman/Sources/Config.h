@@ -3,6 +3,9 @@
 
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 962;
+const int DOTS_SCORE = 10;
+const int POWER_SCORE = 50;
+const int LIFE_SCORE = 10000;
 
 #define CREATE_DEBUG_CONSOLE 1
 #define PAUSE_CONSOLE_WHEN_CLOSING 0
@@ -11,4 +14,5 @@ const int SCREEN_HEIGHT = 962;
 #define START_AT_ROUND 1
 #define START_IN_GAME 1
 #define DEBUG_PLAYER_MOVEMENTS 0
+#define INVINSIBLE 1
 

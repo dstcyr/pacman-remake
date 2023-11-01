@@ -34,6 +34,7 @@ private:
     float m_playerDieElapsed;
 
     bool m_GameStopped;
+    int m_ghostEaten;
 
     void OnPowerActivated(const Event& e);
 };

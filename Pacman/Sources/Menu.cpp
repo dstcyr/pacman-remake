@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "Log.h"
 #include "SaveGame.h"
+#include "Level.h"
 
 void Menu::OnEnter()
 {
@@ -17,6 +18,7 @@ void Menu::OnUpdate(float dt)
     if (Engine::GetKeyDown(KEY_START))
     {
         SaveGame::Load();
+        Level::Get().Reset();
         Engine::SetState("game");
     }
 }
@@ -29,7 +31,7 @@ void Menu::OnRender()
     Engine::DrawString("HIGH SCORE", m_orangeFont, 350.0f, 70.0f);
     Engine::DrawString(std::to_string(SaveGame::highScore), m_whiteFont, 450.0f, 110.0f);
     Engine::DrawString("1UP", m_orangeFont, 140.0f, 70.0f);
-    Engine::DrawString(std::to_string(SaveGame::score), m_whiteFont, 180.0f, 110.0f);
+    Engine::DrawString(std::to_string(SaveGame::GetScore()), m_whiteFont, 180.0f, 110.0f);
     Engine::DrawString("PUSH START", m_whiteFont, 350.0f, 550.0f);
 }
 

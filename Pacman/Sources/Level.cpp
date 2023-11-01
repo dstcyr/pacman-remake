@@ -203,6 +203,11 @@ int Level::GetHeight() const
     return m_height;
 }
 
+bool Level::Empty() const
+{
+    return m_gridData.size() == 0;
+}
+
 void Level::ToLocal(const float worldX, const float worldY, int* localX, int* localY) const
 {
     *localX = static_cast<int>((worldX - m_offsetX) / m_tileWidth);

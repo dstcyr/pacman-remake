@@ -1,10 +1,13 @@
 #include "SaveGame.h"
 #include "Config.h"
+#include "Engine.h"
 
 int SaveGame::highScore = 10000;
 int SaveGame::life = STARTING_LIFE;
 int SaveGame::round = START_AT_ROUND;
 int SaveGame::score = 0;
+int SaveGame::nextScoreLife = LIFE_SCORE;
+CDelegate SaveGame::OnPlayerGainLife;
 
 CFile SaveGame::m_saveGameFile;
 
@@ -31,6 +34,7 @@ void SaveGame::Load()
     life = STARTING_LIFE;
     round = START_AT_ROUND;
     score = 0;
+    nextScoreLife = 10000;
 
     if (CFile::Exists("pacman.sav"))
     {
@@ -47,4 +51,22 @@ void SaveGame::Load()
 void SaveGame::NextRound()
 {
     round++;
+}
+
+void SaveGame::AddScore(int scoreToAdd)
+{
+    score += scoreToAdd;
+
+    if (score > nextScoreLife)
+    {
+        life++;
+        nextScoreLife += LIFE_SCORE;
+        OnPlayerGainLife.Invoke<Event>();
+    }
+
+}
+
+int SaveGame::GetScore()
+{
+    return score;
 }

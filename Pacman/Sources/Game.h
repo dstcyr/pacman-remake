@@ -22,7 +22,10 @@ private:
     size_t m_background;
     size_t m_flash;
     size_t m_currentBackground;
+    size_t m_mockup;
     size_t m_playerReadySfx = 0;
+    size_t lifeSfx;
+    size_t m_lifeTexture;
     bool m_playerReady;
     bool m_levelCleared;
     float m_playerReadyDelay;
@@ -32,4 +35,5 @@ private:
     bool m_PlayerDied;
 
     void OnPlayerDied(const Event& e);
+    void OnPlayerGainLife(const Event& e);
 };

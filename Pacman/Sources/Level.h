@@ -34,6 +34,8 @@ public:
     float CellWidth();
     float CellHeight();
 
+    bool Empty() const;
+
 private:
     Level() = default;
     Level(const Level& other) = default;

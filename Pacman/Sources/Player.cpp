@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Engine.h"
 #include "Level.h"
+#include "SaveGame.h"
 
 Player::Player() : Player(0, 0)
 {
@@ -60,12 +61,14 @@ void Player::Update(float dt)
                 {
                     Level::Get().SetTile(m_localX, m_localY, EMPTY_TILE);
                     PlayEatSFX();
+                    SaveGame::AddScore(DOTS_SCORE);
                 }
 
                 if (tile == POWER_TILE)
                 {
                     Level::Get().SetTile(m_localX, m_localY, EMPTY_TILE);
                     PlayEatSFX();
+                    SaveGame::AddScore(POWER_SCORE);
                     OnPowerActivated.Invoke<Event>();
                 }
 
