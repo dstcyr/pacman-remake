@@ -7,6 +7,8 @@ const int DOTS_SCORE = 10;
 const int POWER_SCORE = 50;
 const int LIFE_SCORE = 10000;
 
+const int GHOST_SFX_CHANNEL = 2;
+
 #define CREATE_DEBUG_CONSOLE 1
 #define PAUSE_CONSOLE_WHEN_CLOSING 0
 #define SHOW_COLLISION 0

@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "MathUtils.h"
 #include "SaveGame.h"
+#include "Engine.h"
 
 EntityManager& EntityManager::Get()
 {
@@ -41,6 +42,16 @@ void EntityManager::Initialize()
     Pinky* pinky = new Pinky(1, 25, m_player);
     m_activeEntity.push_back(pinky);
     m_activeGhost.push_back(pinky);
+
+    m_ghostSFX = Engine::LoadSound("Assets/Audio/ghost.wav");
+    m_powerSFX = Engine::LoadSound("Assets/Audio/power.wav");
+    m_eatGhostSFX = Engine::LoadSound("Assets/Audio/eatghost.wav");
+    Engine::SetVolume(m_powerSFX, 40);
+    Engine::SetVolume(m_ghostSFX, 40);
+    Engine::SetVolume(m_eatGhostSFX, 100);
+
+    m_pauseElapsed = 0.0f;
+    m_paused = false;
 
     for (Entity* entity : m_activeEntity)
     {
@@ -79,12 +90,33 @@ void EntityManager::Update(float dt)
     }
     else
     {
+        if (m_paused)
+        {
+            m_pauseElapsed += dt;
+            if (m_pauseElapsed >= 0.5f)
+            {
+                m_paused = false;
+                m_pauseElapsed = 0.0f;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+
         if (m_powerActivated)
         {
+            m_ghostSFXElapsed += dt;
+            if (m_ghostSFXElapsed > 0.15f)
+            {
+                m_ghostSFXElapsed = 0.0f;
+                Engine::PlaySFX(m_powerSFX, GHOST_SFX_CHANNEL, 0);
+            }
+
             m_powerElapsed += dt;
             if (m_powerElapsed >= 8.0f)
             {
-                LOG(LL_DEBUG, "Deactivate Power");
                 m_powerElapsed = 0.0f;
                 m_powerActivated = false;
                 for (Ghost* ghost : m_activeGhost)
@@ -108,6 +140,15 @@ void EntityManager::Update(float dt)
                 }
             }
         }
+        else
+        {
+            m_ghostSFXElapsed += dt;
+            if (m_ghostSFXElapsed > 0.35f)
+            {
+                m_ghostSFXElapsed = 0.0f;
+                Engine::PlaySFX(m_ghostSFX, GHOST_SFX_CHANNEL, 0);
+            }
+        }
 
         for (Entity* entity : m_activeEntity)
         {
@@ -126,14 +167,15 @@ void EntityManager::Update(float dt)
 
                 if (gx == px && py == gy)
                 {
-#if !INVINSIBLE
                     if (state == EGhostState::CHASE)
                     {
+#if !INVINSIBLE
                         if (!m_player->IsDead())
                         {
                             m_playerCaught = true;
                             m_playerCaughtElapsed = 0.0f;
                         }
+#endif
                     }
                     else if (state == EGhostState::FLEE)
                     {
@@ -145,10 +187,11 @@ void EntityManager::Update(float dt)
                         static int scores[4] = { 200, 400, 800, 1600 };
                         SaveGame::AddScore(scores[m_ghostEaten]);
                         m_ghostEaten = Engine::Clamp(m_ghostEaten + 1, 0, 3);
-
+                        Engine::PlaySFX(m_eatGhostSFX, GHOST_SFX_CHANNEL, 0);
                         ghost->Kill();
+                        m_paused = true;
+                        m_pauseElapsed = 0.0f;
                     }
-#endif
                 }
             }
         }
@@ -157,9 +200,14 @@ void EntityManager::Update(float dt)
 
 void EntityManager::Render()
 {
-    for (Entity* entity : m_activeEntity)
+    if (!m_paused)
     {
-        entity->Render();
+        m_player->Render();
+    }
+
+    for (Ghost* ghost : m_activeGhost)
+    {
+        ghost->Render();
     }
 }
 
@@ -197,7 +245,6 @@ void EntityManager::Clear()
 
 void EntityManager::OnPowerActivated(const Event& e)
 {
-    LOG(LL_DEBUG, "Activate Power");
     m_powerElapsed = 0.0f;
     m_powerActivated = true;
     m_ghostEaten = 0;
