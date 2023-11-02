@@ -3,6 +3,7 @@
 #include "Config.h"
 #include "Collision.h"
 #include "MathUtils.h"
+#include "SaveGame.h"
 
 Level& Level::Get()
 {
@@ -12,6 +13,7 @@ Level& Level::Get()
 
 void Level::Reset()
 {
+    SaveGame::dots = 0;
     m_pill = Engine::LoadTexture("Assets/Images/Pill.png");
     m_power = Engine::LoadTexture("Assets/Images/Power.png");
 

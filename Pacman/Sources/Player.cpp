@@ -62,6 +62,7 @@ void Player::Update(float dt)
                     Level::Get().SetTile(m_localX, m_localY, EMPTY_TILE);
                     PlayEatSFX();
                     SaveGame::AddScore(DOTS_SCORE);
+                    SaveGame::dots++;
                 }
 
                 if (tile == POWER_TILE)

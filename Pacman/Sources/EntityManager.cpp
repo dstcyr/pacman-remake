@@ -17,6 +17,8 @@ EntityManager& EntityManager::Get()
 
 void EntityManager::Initialize()
 {
+    m_activeFruit = nullptr;
+
     m_powerElapsed = 0.0f;
     m_powerActivated = false;
     m_playerCaught = false;
@@ -104,6 +106,11 @@ void EntityManager::Update(float dt)
             }
         }
 
+        if ((SaveGame::dots == 70 || SaveGame::dots == 170) && m_activeFruit == nullptr)
+        {
+            m_activeFruit = new Fruit();
+            m_activeFruit->Initialize();
+        }
 
         if (m_powerActivated)
         {
@@ -195,6 +202,22 @@ void EntityManager::Update(float dt)
                 }
             }
         }
+
+
+        if (m_player && m_activeFruit)
+        {
+            int px, py;
+            m_player->GetPosition(&px, &py);
+
+            int fx, fy;
+            m_activeFruit->GetPosition(&fx, &fy);
+
+            if (px == fx && py == fy)
+            {
+                m_activeFruit->AddScore();
+                SAFE_DELETE(m_activeFruit);
+            }
+        }
     }
 }
 
@@ -208,6 +231,11 @@ void EntityManager::Render()
     for (Ghost* ghost : m_activeGhost)
     {
         ghost->Render();
+    }
+
+    if (m_activeFruit)
+    {
+        m_activeFruit->Render();
     }
 }
 

@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Blinky.cpp" />
+    <ClCompile Include="Sources\Fruit.cpp" />
     <ClCompile Include="Sources\Inky.cpp" />
     <ClCompile Include="Sources\Clyde.cpp" />
     <ClCompile Include="Sources\Entity.cpp" />
@@ -168,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Blinky.h" />
+    <ClInclude Include="Sources\Fruit.h" />
     <ClInclude Include="Sources\Inky.h" />
     <ClInclude Include="Sources\Clyde.h" />
     <ClInclude Include="Sources\Config.h" />

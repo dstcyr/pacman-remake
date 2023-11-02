@@ -8,6 +8,7 @@ public:
     static int highScore;
     static int round;
     static int life;
+    static int dots;
 
     static void CheckHighScore();
     static void Save();

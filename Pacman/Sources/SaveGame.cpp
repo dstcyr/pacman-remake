@@ -4,6 +4,7 @@
 
 int SaveGame::highScore = 10000;
 int SaveGame::life = STARTING_LIFE;
+int SaveGame::dots = 0;
 int SaveGame::round = START_AT_ROUND;
 int SaveGame::score = 0;
 int SaveGame::nextScoreLife = LIFE_SCORE;
@@ -34,6 +35,7 @@ void SaveGame::Load()
     life = STARTING_LIFE;
     round = START_AT_ROUND;
     score = 0;
+    dots = 0;
     nextScoreLife = 10000;
 
     if (CFile::Exists("pacman.sav"))

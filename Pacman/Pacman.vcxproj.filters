@@ -36,6 +36,9 @@
     <ClCompile Include="Sources\Pinky.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Fruit.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Config.h" />
@@ -71,6 +74,9 @@
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Pinky.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Fruit.h">
       <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>

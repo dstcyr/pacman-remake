@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Delegate.h"
+#include "Fruit.h"
 
 class Player;
 class Ghost;
@@ -23,6 +24,7 @@ public:
 private:
     std::vector<Entity*> m_activeEntity;
     std::vector<Ghost*> m_activeGhost;
+    Fruit* m_activeFruit;
     Player* m_player;
     float m_powerElapsed;
     bool m_powerActivated;
