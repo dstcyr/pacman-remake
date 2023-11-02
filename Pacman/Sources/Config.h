@@ -14,7 +14,7 @@ const int GHOST_SFX_CHANNEL = 2;
 #define SHOW_COLLISION 0
 #define STARTING_LIFE 2
 #define START_AT_ROUND 1
-#define START_IN_GAME 1
+#define START_IN_GAME 0
 #define DEBUG_PLAYER_MOVEMENTS 0
-#define INVINSIBLE 1
+#define INVINSIBLE 0
 
