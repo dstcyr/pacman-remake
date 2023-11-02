@@ -17,8 +17,8 @@ void Game::OnEnter()
     m_flash = Engine::LoadTexture("Assets/Images/Flash.png");
     m_currentBackground = m_background;
 
-    m_whiteFont = Engine::LoadFont("Assets/Fonts/8bitwonder.ttf", "whitefont", 28, NColor::White);
-    m_orangeFont = Engine::LoadFont("Assets/Fonts/8bitwonder.ttf", "redfont", 28, NColor(224, 80, 0, 255));
+    m_whiteFont = Engine::LoadFont("Assets/Fonts/8bitwonder.ttf", "whitefontmid", 28, NColor::White);
+    m_orangeFont = Engine::LoadFont("Assets/Fonts/8bitwonder.ttf", "redfontmid", 28, NColor(224, 80, 0, 255));
     m_peachFont = Engine::LoadFont("Assets/Fonts/8bitwonder.ttf", "peachfont", 32, NColor::DarkPeach);
     m_blueFont = Engine::LoadFont("Assets/Fonts/8bitwonder.ttf", "bluefont", 32, NColor::LightSkyBlue);
 
@@ -61,10 +61,12 @@ void Game::OnUpdate(float dt)
     }
     else
     {
+#if _DEBUG
         if (Engine::GetKeyDown(KEY_1))
         {
             Level::Get().RemoveNPills(10);
         }
+#endif
 
         if (!m_playerReady)
         {
