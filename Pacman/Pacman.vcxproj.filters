@@ -87,9 +87,6 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{029ba0d0-2b04-4180-8cf1-6d3746a5d8b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game">
-      <UniqueIdentifier>{2bafd0fe-9fa9-4b17-bbde-1c808e8d4a98}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Entities">
       <UniqueIdentifier>{b4949243-64e6-4f1f-bce5-e7097dcff6f5}</UniqueIdentifier>
     </Filter>
